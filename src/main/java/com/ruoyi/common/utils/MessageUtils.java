@@ -18,6 +18,7 @@ public class MessageUtils
      * @param args 参数
      * @return
      */
+    // * 这里的MessageSource中文内容是从哪来的？？？？？
     public static String message(String code, Object... args)
     {
         MessageSource messageSource = SpringUtils.getBean(MessageSource.class);

@@ -46,6 +46,7 @@ public class SystemLogUtils
         }
         else if (Constants.LOGIN_FAIL.equals(status))
         {
+            // * 登录失败时从这里保存登录日志32
             saveOpLog(username, msg, Constants.FAIL);
         }
     }

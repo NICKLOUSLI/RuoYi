@@ -31,6 +31,7 @@ public class ConfigController extends BaseController
 
     @Autowired
     private IConfigService configService;
+    private Message error;
 
     @RequiresPermissions("system:config:view")
     @GetMapping()
@@ -89,7 +90,7 @@ public class ConfigController extends BaseController
         {
             return Message.success();
         }
-        return Message.error();
+        return error;
     }
 
     /**

@@ -38,36 +38,36 @@ public class PasswordService
     {
         loginRecordCache = cacheManager.getCache("loginRecordCache");
     }
-
+    // * 这里验证密码及输入次数 如何确定输入次数？
     public void validate(User user, String password)
     {
-        String loginName = user.getLoginName();
+            String loginName = user.getLoginName();
+            // * 这里的用户登录缓存是如何实现的？
+            AtomicInteger retryCount = loginRecordCache.get(loginName);
 
-        AtomicInteger retryCount = loginRecordCache.get(loginName);
+            if (retryCount == null)
+            {
+                retryCount = new AtomicInteger(0);
+                loginRecordCache.put(loginName, retryCount);
+            }
+            if (retryCount.incrementAndGet() > Integer.valueOf(maxRetryCount).intValue())
+            {
+                SystemLogUtils.log(loginName, Constants.LOGIN_FAIL, MessageUtils.message("user.password.retry.limit.exceed", maxRetryCount));
+                throw new UserPasswordRetryLimitExceedException(Integer.valueOf(maxRetryCount).intValue());
+            }
 
-        if (retryCount == null)
-        {
-            retryCount = new AtomicInteger(0);
-            loginRecordCache.put(loginName, retryCount);
-        }
-        if (retryCount.incrementAndGet() > Integer.valueOf(maxRetryCount).intValue())
-        {
-            SystemLogUtils.log(loginName, Constants.LOGIN_FAIL, MessageUtils.message("user.password.retry.limit.exceed", maxRetryCount));
-            throw new UserPasswordRetryLimitExceedException(Integer.valueOf(maxRetryCount).intValue());
-        }
-
-        if (!matches(user, password))
-        {
-            SystemLogUtils.log(loginName, Constants.LOGIN_FAIL, MessageUtils.message("user.password.retry.limit.count", retryCount, password));
-            loginRecordCache.put(loginName, retryCount);
-            throw new UserPasswordNotMatchException();
-        }
-        else
-        {
-            clearLoginRecordCache(loginName);
-        }
+            if (!matches(user, password))
+            {
+                SystemLogUtils.log(loginName, Constants.LOGIN_FAIL, MessageUtils.message("user.password.retry.limit.count", retryCount, password));
+                loginRecordCache.put(loginName, retryCount);
+                throw new UserPasswordNotMatchException();
+            }
+            else
+            {
+                clearLoginRecordCache(loginName);
+            }
     }
-
+    // * 验证数据库中的加密密码和前段传输密码加密后是否相同
     public boolean matches(User user, String newPassword)
     {
         return user.getPassword().equals(encryptPassword(user.getLoginName(), newPassword, user.getSalt()));

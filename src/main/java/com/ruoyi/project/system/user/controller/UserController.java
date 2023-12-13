@@ -59,6 +59,7 @@ public class UserController extends BaseController
     @ResponseBody
     public TableDataInfo list(User user)
     {
+        // * 这个方法要看一下
         startPage();
         List<User> list = userService.selectUserList(user);
         return getDataTable(list);
@@ -101,6 +102,8 @@ public class UserController extends BaseController
     @GetMapping("/resetPwd/{userId}")
     public String resetPwd(@PathVariable("userId") Long userId, Model model)
     {
+
+
         User user = userService.selectUserById(userId);
         model.addAttribute("user", user);
         return prefix + "/resetPwd";

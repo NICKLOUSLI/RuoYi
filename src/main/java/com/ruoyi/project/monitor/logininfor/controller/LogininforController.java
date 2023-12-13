@@ -42,7 +42,9 @@ public class LogininforController extends BaseController
     @ResponseBody
     public TableDataInfo list(Logininfor logininfor)
     {
+        // *公用的分页方法 如何分页的？
         startPage();
+        //
         List<Logininfor> list = logininforService.selectLogininforList(logininfor);
         return getDataTable(list);
     }

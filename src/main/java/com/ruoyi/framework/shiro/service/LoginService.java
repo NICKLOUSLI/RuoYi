@@ -39,6 +39,7 @@ public class LoginService
     public User login(String username, String password)
     {
         // 验证码校验
+        // * 这里的验证码是干嘛的？当前系统有用到？
         if (!StringUtils.isEmpty(ServletUtils.getStrAttribute(ShiroConstants.CURRENT_CAPTCHA)))
         {
             SystemLogUtils.log(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error"));

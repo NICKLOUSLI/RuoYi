@@ -44,8 +44,7 @@ public class LogAspect
     // 配置织入点
     @Pointcut("@annotation(com.ruoyi.framework.aspectj.lang.annotation.Log)")
     public void logPointCut()
-    {
-    }
+    {}
 
     /**
      * 前置通知 用于拦截操作
@@ -60,7 +59,6 @@ public class LogAspect
 
     /**
      * 拦截异常操作
-     * 
      * @param joinPoint
      * @param e
      */
@@ -126,7 +124,7 @@ public class LogAspect
 
     /**
      * 获取注解中对方法的描述信息 用于Controller层注解
-     * 
+     *
      * @param joinPoint 切点
      * @return 方法描述
      * @throws Exception
