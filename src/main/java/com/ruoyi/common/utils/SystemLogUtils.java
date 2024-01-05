@@ -50,7 +50,7 @@ public class SystemLogUtils
             saveOpLog(username, msg, Constants.FAIL);
         }
     }
-
+    // 1 3 9 27 81 
     public static void saveOpLog(String username, String message, String status)
     {
         UserAgent userAgent = UserAgent.parseUserAgentString(ServletUtils.getRequest().getHeader("User-Agent"));
@@ -70,3 +70,5 @@ public class SystemLogUtils
         logininforService.insertLogininfor(logininfor);
     }
 }
+
+

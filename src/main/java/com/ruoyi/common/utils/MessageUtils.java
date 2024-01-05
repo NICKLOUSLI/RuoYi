@@ -13,7 +13,6 @@ public class MessageUtils
 
     /**
      * 根据消息键和参数 获取消息 委托给spring messageSource
-     *
      * @param code 消息键
      * @param args 参数
      * @return

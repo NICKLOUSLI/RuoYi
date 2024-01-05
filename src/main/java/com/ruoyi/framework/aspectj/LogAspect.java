@@ -31,6 +31,7 @@ import com.ruoyi.project.system.user.domain.User;
  * 
  * @author ruoyi
  */
+//切面类
 @Aspect
 @Component
 @EnableAsync
@@ -44,16 +45,24 @@ public class LogAspect
     // 配置织入点
     @Pointcut("@annotation(com.ruoyi.framework.aspectj.lang.annotation.Log)")
     public void logPointCut()
-    {}
+    {
+        System.out.println("调用旧的AOP");
+    }
 
+    @Pointcut("@annotation(com.ruoyi.framework.aspectj.lang.annotation.Log)")
+    public void myLogPointCut()
+    {
+        System.out.println("调用我新建的AOP");
+    }
     /**
      * 前置通知 用于拦截操作
-     *
      * @param joinPoint 切点
      */
-    @AfterReturning(pointcut = "logPointCut()")
+    //@AfterReturning(pointcut = "logPointCut()")
+    @AfterReturning(pointcut = "myLogPointCut()")
     public void doBefore(JoinPoint joinPoint)
     {
+        System.out.println("前置通知。。。");
         handleLog(joinPoint, null);
     }
 
@@ -65,12 +74,14 @@ public class LogAspect
     @AfterThrowing(value = "logPointCut()", throwing = "e")
     public void doAfter(JoinPoint joinPoint, Exception e)
     {
+        System.out.println("后置通知。。。");
         handleLog(joinPoint, e);
     }
 
     @Async
     protected void handleLog(final JoinPoint joinPoint, final Exception e)
     {
+        System.out.println("调用HandleLog... ...");
         try
         {
             // 获得注解
@@ -124,7 +135,6 @@ public class LogAspect
 
     /**
      * 获取注解中对方法的描述信息 用于Controller层注解
-     *
      * @param joinPoint 切点
      * @return 方法描述
      * @throws Exception

@@ -33,6 +33,8 @@ public class LoginService
     @Autowired
     private IUserService userService;
 
+
+
     /**
      * 登录
      */
@@ -79,6 +81,7 @@ public class LoginService
         {
             user = userService.selectUserByEmail(username);
         }
+
 
         if (user == null || UserStatus.DELETED.getCode() == user.getStatus())
         {

@@ -1,6 +1,7 @@
 package com.ruoyi.common.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ruoyi.common.configure.RYConfiguration;
 import com.ruoyi.common.constant.Constants;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -10,16 +11,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.stereotype.Component;
 
-/**
- * 获取地址类
- * 
- * @author ruoyi
- */
+@Component
 public class AddressUtils {
     private static final Logger log = LoggerFactory.getLogger(AddressUtils.class);
 
-    public static final String IP_URL = "http://ip.taobao.com/service/getIpInfo2.php";
+    public static final String IP_URL = "http://ip.taobao.com/service/getIpInfo.php";
+
 
     /**
      * 获取查询结果
@@ -31,6 +34,11 @@ public class AddressUtils {
     private static String sendPost(String content, String encoding) {
         URL url = null;
         HttpURLConnection connection = null;
+
+        if(RYConfiguration.TEST_FLAG){
+
+            return null;
+        }
         try {
             url = new URL(IP_URL);
             connection = (HttpURLConnection) url.openConnection();
@@ -66,6 +74,11 @@ public class AddressUtils {
     }
 
     public static String getRealAddressByIP(String ip) {
+        if(RYConfiguration.TEST_FLAG){
+            //log.debug("测试环境，无需检查ip地址...");
+            return null;
+        }
+
         String address = "";
         try {
             address = sendPost("ip=" + ip, Constants.UTF8);
@@ -79,5 +92,6 @@ public class AddressUtils {
             log.error("根据IP获取所在位置----------错误消息：" + e.getMessage());
         }
         return address;
+
     }
 }

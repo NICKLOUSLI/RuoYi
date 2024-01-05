@@ -1,0 +1,63 @@
+
+public class ThreadDemo {
+    public static void main(String[] args) {
+        MyThread myThread = new MyThread();
+        myThread.start();
+
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String input = scanner.nextLine();
+            if (input.equalsIgnoreCase("A")) {
+                myThread.pauseThread();
+            } else if (input.equalsIgnoreCase("B")) {
+                myThread.resumeThread();
+            }
+        }
+    }
+
+    static class MyThread extends Thread {
+        private boolean isPaused;
+
+        public synchronized void pauseThread() {
+            isPaused = true;
+        }
+
+        public synchronized void resumeThread() {
+            isPaused = false;
+            notify();
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                synchronized (this) {
+                    while (isPaused) {
+                        try {
+                            wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                // 执行需要的操作
+                System.out.println("线程正在运行...");
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+在这个示例代码中，创建了一个 MyThread 类，继承自 Thread 类。在 MyThread 类中，使用 isPaused 变量来控制线程的暂停和恢复。当输入"A"时，调用 pauseThread() 方法将 isPaused 设置为 true ，线程进入等待状态；当输入"B"时，调用 resumeThread() 方法将 isPaused 设置为 false ，并唤醒线程继续执行。
+
+在 main 方法中，创建了一个 MyThread 实例，并启动线程。然后使用 Scanner 类从控制台读取输入，根据输入的值调用相应的方法来控制线程的暂停和恢复。
+Was the last answer useful?
+
+
+
+
+Status Icon
+RuoYi

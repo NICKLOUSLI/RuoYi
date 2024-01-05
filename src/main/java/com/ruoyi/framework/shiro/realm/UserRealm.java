@@ -1,5 +1,6 @@
 package com.ruoyi.framework.shiro.realm;
 
+import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -52,6 +53,7 @@ public class UserRealm extends AuthorizingRealm
      * 授权
      */
     @Override
+    @Log
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0)
     {
         Long userId = ShiroUtils.getUserId();

@@ -1,5 +1,6 @@
 package com.ruoyi.project.system.user.controller;
 
+import com.ruoyi.framework.aspectj.lang.annotation.MyAOP;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -22,15 +23,19 @@ public class LoginController extends BaseController
 {
 
     @GetMapping("/login")
+    //@MyAOP
     public String login()
-    {
+    {   //这里的login是为了在地址栏输入login的时候进行跳转吗？
         return "login";
     }
 
+
     @PostMapping("/login")
     @ResponseBody
+    @MyAOP
     public Message ajaxLogin(String username, String password, Boolean rememberMe)
     {
+        // *根据传输的用户名和密码建立一个Token
         UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
         Subject subject = SecurityUtils.getSubject();
         try
