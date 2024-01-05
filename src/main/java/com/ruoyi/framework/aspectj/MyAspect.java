@@ -2,11 +2,10 @@ package com.ruoyi.framework.aspectj;
 
 
 import com.ruoyi.framework.aspectj.lang.annotation.MyAOP;
+import net.sf.jsqlparser.statement.select.Join;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -25,15 +24,19 @@ public class MyAspect
         // 这里的方法永远不会被执行？？？
     }
 
-    @AfterReturning(pointcut = "loginPointCut()")
+    //@AfterReturning(pointcut = "loginPointCut()")
+    @Before("loginPointCut()")
     public void doBefore(JoinPoint joinPoint){
         System.out.println("前置通知... ...");
+        // 增强方法
+        analogHandle(joinPoint);
         System.out.println("前置通知执行完成");
+
     }
 
     @Async
     public MyAOP analogHandle(JoinPoint joinPoint){
-        System.out.println("调用 My 前置通知处理");
+        System.out.println("调用Handle方法... ...");
         //System.out.println("signature is : "+joinPoint.getSignature());
         System.out.println("target is :" +joinPoint.getTarget());
         System.out.println("this is : "+joinPoint.getThis());
@@ -45,13 +48,22 @@ public class MyAspect
             return method.getAnnotation(MyAOP.class);
         }
         return null;
-
     }
 
-    public void doAfter(JoinPoint joinPoint){
+    @After(value = "loginPointCut()")
+    public void doAfter(JoinPoint joinPoint) throws InterruptedException {
+
         System.out.println("后置通知... ...");
-        analogHandle(joinPoint);
+
+
     }
+
+    @AfterThrowing(value = "loginPointCut()",throwing = "e")
+    public void afterThrowing(JoinPoint joinPoint,Exception e){
+        System.out.println(joinPoint.getSignature()+" 类报错  "+e.getMessage());
+    }
+
+
 
 
 

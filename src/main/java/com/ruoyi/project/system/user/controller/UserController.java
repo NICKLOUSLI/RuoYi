@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ import com.ruoyi.project.system.user.service.IUserService;
  */
 @Controller
 @RequestMapping("/system/user")
+
 public class UserController extends BaseController
 {
 
@@ -71,6 +73,7 @@ public class UserController extends BaseController
     @RequiresPermissions("system:user:edit")
     @Log(title = "系统管理", action = "用户管理-修改用户")
     @GetMapping("/edit/{userId}")
+
     public String edit(@PathVariable("userId") Long userId, Model model)
     {
         User user = userService.selectUserById(userId);
@@ -165,6 +168,7 @@ public class UserController extends BaseController
     @Log(title = "系统管理", action = "用户管理-保存用户")
     @PostMapping("/save")
     @Transactional(rollbackFor = Exception.class)
+    //@Transactional
     @ResponseBody
     public Message save(User user)
     {

@@ -24,8 +24,6 @@ user:
     maxRetryCount: 5
 #Spring配置
 spring:
-  profiles:
-    active: druid
   thymeleaf:
     mode: HTML
     cache: false
@@ -35,7 +33,8 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
-
+  profiles: 
+    active: druid
   http:
     multipart:
       max-file-size: 30Mb

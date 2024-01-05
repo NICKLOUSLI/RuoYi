@@ -35,8 +35,10 @@ public class LoginController extends BaseController
     @MyAOP
     public Message ajaxLogin(String username, String password, Boolean rememberMe)
     {
+        System.out.println("执行login 操作");
         // *根据传输的用户名和密码建立一个Token
         UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
+        // 这个subject干啥用的
         Subject subject = SecurityUtils.getSubject();
         try
         {
@@ -59,4 +61,6 @@ public class LoginController extends BaseController
     {
         return "/error/unauth";
     }
+
+
 }
